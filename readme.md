@@ -6,6 +6,28 @@
 
 You need to have [Yarn](https://yarnpkg.com) installed.
 
+# How to use
+
+## Initialize the component
+Provide endpoint and access token to initialize the component
+```js
+FbUser.enableIface('endpoint', 'token')
+```
+
+## Methods
+
+### Search for users
+
+* FbUser.getUsers() : Will fetch all users
+* FbUser.getUserByUsername('test@gmail.com') : will fetch the user if exists
+* FbUser.getUserById(12312312332) : will fetch the user if exists
+
+## Updating user
+* FbUser.save()
+
+## Deleting/Inactivating user
+* FbUser.delete()
+
 # Testing
 
 Install `gulp`:
