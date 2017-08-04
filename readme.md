@@ -1,6 +1,10 @@
 # node-fbam
 
-> IONISx models (SDK)
+> Facebook Account Management API
+
+# What For ?
+
+This component is use to provision, edit, get and delete users via API for facebook workplace
 
 # Development
 
