@@ -2,7 +2,7 @@
 /* global expect*/
 
 const nconf  = require('nconf');
-const FbUser = require('../lib/fb-user');
+const FbUser = require('../index');
 
 //require('request').debug = true
 
@@ -26,29 +26,30 @@ describe('index', function () {
         })
 
         it('get All Users', function() {
-            FbUser.getUsers().then(users => {
+            return FbUser.getUsers().then(users => {
                 expect(users).to.be.ok
+                expect(users).to.be.an('array').that.is.not.empty;
             })
         });
         it('get Me by Username', function() {
-            FbUser.getUserByUsername('adnan.aita@ionisx.com').then(user => {
+            return FbUser.getUserByUsername('adnan.aita@ionisx.com').then(user => {
                 expect(user.userName).to.be.equal('adnan.aita@ionisx.com')
             })
         });
         it('Search for unknown User', function() {
-            FbUser.getUserByUsername('adnan.aita@ionisxerror.com').then(user => {
+            return FbUser.getUserByUsername('adnan.aita@ionisxerror.com').then(user => {
                 expect(user).to.be.ko
             })
         })
 
         it('get Me by Id', function() {
-            FbUser.getUserById('100020299596489').then(user => {
+            return FbUser.getUserById('100020299596489').then(user => {
                 expect(user.userName).to.be.equal('adnan.aita@ionisx.com')
             })
         })
 
         it('get Unknown user by Id', function() {
-            FbUser.getUserById('007').then(user => {
+            return FbUser.getUserById('007').then(user => {
                 expect(user).to.be.ko
             })
         })
@@ -129,7 +130,7 @@ describe('index', function () {
             })
         })
     })
-    describe.only('End to End Functions', function() {
+    describe('End to End Functions', function() {
         before(function() {
             FbUser.enableIface(nconf.get('facebook:endpoint'),
                                nconf.get('facebook:token'))
@@ -162,6 +163,20 @@ describe('index', function () {
                 return FbUser.getUserByUsername('adnan.aita+test@gmail.com').then(user => {
                     expect(user.externalId).to.be.equal('ZZzzZZ')
                 })
+            })
+        })
+        it('should delete an user', function() {
+            return FbUser.getUserByUsername('adnan.aita+test@gmail.com')
+            .then(user => {
+                expect(user).to.not.be.equal(null)
+                expect(user.userName).to.be.equal('adnan.aita+test@gmail.com')
+                return user.delete()
+            })
+            .then(data => {
+                expect(data).to.be.true
+            })
+            .catch(function() {
+                expect(false, 'Deletion of user Failed').to.be.ok
             })
         })
     })
