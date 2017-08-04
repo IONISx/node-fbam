@@ -4,6 +4,9 @@
 const nconf  = require('nconf');
 const FbUser = require('../index');
 
+const endpoint = 'https://www.facebook.com/scim/'
+const token = 'your token here'
+
 //require('request').debug = true
 
 // ## //
@@ -11,16 +14,34 @@ const FbUser = require('../index');
 describe('index', function () {
     before(function () {
         nconf.use('memory');
-        nconf.set('facebook:endpoint', 'https://www.facebook.com/scim/');
-        nconf.set('facebook:token', 'Set your token here');
     });
 
     after(function () {
         nconf.reset();
     });
 
+    describe.only('Tests Init', function() {
+        before(function() {
+            nconf.reset()
+        })
+        it('should says me false', function() {
+            var res = FbUser.enableIface(nconf.get('facebook:endpoint'),
+                                         nconf.get('facebook:token'))
+            expect(res).to.be.false
+        })
+        it('should says me true', function() {
+            nconf.set('facebook:endpoint', endpoint);
+            nconf.set('facebook:token', token);
+            var res = FbUser.enableIface(nconf.get('facebook:endpoint'),
+                                         nconf.get('facebook:token'))
+            expect(res).to.be.true
+        })
+    })
+
     describe('get Users in various ways', function () {
         before(function() {
+            nconf.set('facebook:endpoint', endpoint);
+            nconf.set('facebook:token', token);
             FbUser.enableIface(nconf.get('facebook:endpoint'),
                                nconf.get('facebook:token'))
         })
@@ -57,6 +78,8 @@ describe('index', function () {
 
     describe('Create & Update Users', function() {
         before(function() {
+            nconf.set('facebook:endpoint', endpoint);
+            nconf.set('facebook:token', token);
             FbUser.enableIface(nconf.get('facebook:endpoint'),
                                nconf.get('facebook:token'))
         })
@@ -132,6 +155,8 @@ describe('index', function () {
     })
     describe('End to End Functions', function() {
         before(function() {
+            nconf.set('facebook:endpoint', endpoint);
+            nconf.set('facebook:token', token);
             FbUser.enableIface(nconf.get('facebook:endpoint'),
                                nconf.get('facebook:token'))
         })
