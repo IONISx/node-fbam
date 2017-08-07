@@ -115,7 +115,7 @@ describe('index', function () {
                 expect(user).to.not.be.equal(null)
                 expect(user.userName).to.be.equal('adnan.aita+test@gmail.com')
                 user.externalId = 'xxxIDxxx'
-                return user.update()
+                return user._update()
             })
         })
 
@@ -127,7 +127,7 @@ describe('index', function () {
             user.name     = 'Adnan AITA Test'
             user.externalId = 'xxxx'
 
-            return user.update().then((data) => {
+            return user._update().then((data) => {
                 expect(data).to.be.false
             })
         })
